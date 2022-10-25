@@ -26,8 +26,8 @@ stages:
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'Sonarcloud'
-          organization: 'devops-franccesca'
-          projectKey: 'DevOps-Franccesca_spring-boot-kubernetes'
+          organization: 'devops-test-2'
+          projectKey: 'DevOps-Test-2_spring-boot-kubernetes'
           projectName: 'spring-boot-kubernetes'
 
       - task: Maven@4
