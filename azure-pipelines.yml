@@ -48,12 +48,14 @@ stages:
          SonarCloud: 'Sonarcloud'
          organization: 'devops-test-2'
 
-
-  - job: sca
+- stage: SCA
+  jobs:
+  - job: SCA
+    displayName: SCA
     steps:
      - task: dependency-check-build-task@6
        inputs:
          projectName: 'spring-boot-kubernetes'
          scanPath: '$(Build.ArtifactStagingDirectory)'
          format: 'HTML'
-       displayName: SCA
+       
