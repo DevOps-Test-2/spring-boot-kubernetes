@@ -37,6 +37,19 @@ public class Controller {
     public List<User> getUsersByContainName(@PathVariable("contain_name") String containName){
         return userService.getUser(containName);
     }
+    
+     @GetMapping("/users/{contain_name}")
+    public List<User> getUsersByContainNamee(@PathVariable("contain_name") String containName){
+        return userService.getUser(containName);
+    }
+     @GetMapping("/users/{contain_name}")
+    public List<User> getUsersByContainNameee(@PathVariable("contain_name") String containName){
+        return userService.getUser(containName);
+    }
+     @GetMapping("/users/{contain_name}")
+    public List<User> getUsersByContainNameeeee(@PathVariable("contain_name") String containName){
+        return userService.getUser(containName);
+    }
 
 
 }
