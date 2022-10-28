@@ -10,11 +10,3 @@ public class User {
     String name;
 }
 
-public class userr {
-    int id;
-    String name;
-}
-public class User {
-    int id;
-    String name;
-}
