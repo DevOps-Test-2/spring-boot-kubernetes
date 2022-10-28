@@ -16,3 +16,19 @@ public class ConfigMapPodInjectionProperties {
 
     String blog;
 }
+public class ConfigMapPodInjectionPropertiess {
+
+    String name;
+
+    String blog;
+}public class ConfigMapPodInjectionPropertiesss{
+
+    String name;
+
+    String blog;
+}public class ConfigMapPodInjectionPropertiessss {
+
+    String name;
+
+    String blog;
+}
