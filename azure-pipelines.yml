@@ -57,13 +57,24 @@ stages:
 - stage: SCA
   jobs:
   - job: SCA
-    displayName: SCA
+    displayName: 'SCA'
     steps:
-     - task: dependency-check-build-task@6
-       inputs:
-         projectName: 'spring-boot-kubernetes'
-         scanPath: '$(Build.ArtifactStagingDirectory)'
-         format: 'HTML'
+    - task: Maven@4
+      inputs:
+        mavenPomFile: 'pom.xml'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        javaHomeOption: 'JDKVersion'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: false
+    - task: dependency-check-build-task@6
+      inputs:
+        projectName: 'spring-boot-kubernetes'
+        scanPath: '$(Build.SourcesDirectory)'
+        format: 'HTML'
+        failOnCVSS: '7'
       
      
 
@@ -77,40 +88,34 @@ stages:
       inputs:
         mavenPomFile: 'pom.xml'
         publishJUnitResults: true
-        testResultsFiles: '*/surefire-reports/TEST-.xml'
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
         javaHomeOption: 'JDKVersion'
         mavenVersionOption: 'Default'
         mavenAuthenticateFeed: false
         effectivePomSkip: false
         sonarQubeRunAnalysis: false
-
     - task: DockerInstaller@0
       inputs:
         dockerVersion: '17.09.0-ce'
-
     - task: Docker@2
       inputs:
-        containerRegistry: 'Docker'
+        containerRegistry: 'docker'
         command: 'login'
-
     - task: Docker@2
       inputs:
-        containerRegistry: 'Docker'
+        containerRegistry: 'docker'
         repository: 'nicolasjordan95/spring-boot-kubernetes'
         command: 'build'
         Dockerfile: '**/Dockerfile'
-        tags: 'latest'
-
     - script: | 
-       sudo apt-get install -y rpm
+        sudo apt-get install -y rpm
         wget https://github.com/aquasecurity/trivy/releases/download/v0.27.1/trivy_0.27.1_Linux-64bit.deb
         sudo dpkg -i trivy_0.27.1_Linux-64bit.deb
-        trivy image nicolasjordan95/spring-boot-kubernetes:latest
+        trivy image --exit-code 1 --severity HIGH,CRITICAL nicolasjordan95/spring-boot-kubernetes:$(Build.BuildId)
       displayName: Image Scan
-    
     - task: Docker@2
       inputs:
-        containerRegistry: 'Docker'
+        containerRegistry: 'docker'
         repository: 'nicolasjordan95/spring-boot-kubernetes'
-        command: 'push'
-        tags: 'latest'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
